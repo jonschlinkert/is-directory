@@ -12,9 +12,11 @@ npm i is-directory --save-dev
 ## Usage
 
 ```js
-var isDirectory = require('is-directory');
-console.log(isDirectory('abc'));
-//=> ['a', 'b', 'c'];
+var isDir = require('is-directory');
+console.log(isDir('README.md'));
+//=> 'false'
+console.log(isDir('test'));
+//=> 'true'
 ```
 
 ## Author
