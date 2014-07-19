@@ -1,7 +1,7 @@
 {
   "name": "is-directory",
   "description": "Extends `stats.isDirectory()`, returns `true` if a filepath is a directory.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/jonschlinkert/is-directory",
   "author": {
     "name": "Jon Schlinkert",
@@ -21,13 +21,15 @@
     }
   ],
   "keywords": [
-    "docs",
-    "documentation",
-    "generate",
-    "generator",
-    "markdown",
-    "templates",
-    "verb"
+    "node",
+    "node.js",
+    "path",
+    "fs",
+    "file",
+    "system",
+    "filepath",
+    "dir",
+    "directory"
   ],
   "main": "index.js",
   "engines": {
