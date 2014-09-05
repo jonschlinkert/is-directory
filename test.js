@@ -8,7 +8,7 @@
 'use strict';
 
 var assert = require('assert');
-var isDir = require('../');
+var isDir = require('./');
 
 function isFile(filepath) {
   return !isDir(filepath);
@@ -16,7 +16,6 @@ function isFile(filepath) {
 
 describe('isDir', function () {
   it('should return `true` if the path is a directory', function () {
-    assert(isDir('test'));
     assert(isDir('node_modules'));
     assert(!isDir('.jshintrc'));
     assert(!isDir('README.md'));

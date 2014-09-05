@@ -4,7 +4,7 @@
 var fs = require('fs');
 
 var isDir = function isDir(filepath, callback) {
-  if(!callback) {
+  if(typeof callback !== 'function') {
     return isDir.sync(filepath);
   }
 
