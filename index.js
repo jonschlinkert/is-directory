@@ -2,13 +2,27 @@
 'use strict';
 
 var fs = require('fs');
-var path = require('path');
 
-
-module.exports = function isDir() {
-  var filepath = path.join.apply(path, arguments);
-  if (fs.existsSync(filepath)) {
-    return fs.statSync(filepath).isDirectory();
+var isDir = function isDir(filepath, callback) {
+  if(!callback) {
+    return isDir.sync(filepath);
   }
-  return false;
+
+  fs.stat(filepath, function(err, stats){
+    if(err) {
+      callback(err);
+      return;
+    }
+
+    callback(null, stats.isDirectory());
+    return;
+  });
 };
+
+
+isDir.sync = function isDirSync(filepath) {
+  var stat = fs.statSync(filepath);
+  return stat && stat.isDirectory();
+};
+
+module.exports = isDir;
