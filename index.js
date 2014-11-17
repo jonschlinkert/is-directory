@@ -9,12 +9,18 @@
 
 var fs = require('fs');
 
-var isDir = function isDir(filepath, cb) {
+/**
+ * Expose `isDir`
+ */
+
+module.exports = isDir;
+
+function isDir(filepath, cb) {
   if (typeof cb !== 'function') {
     return isDir.sync(filepath);
   }
 
-  fs.stat(filepath, function (err, stats) {
+  fs.stat(filepath, function(err, stats) {
     if (err) {
       cb(err);
       return;
@@ -23,16 +29,12 @@ var isDir = function isDir(filepath, cb) {
     cb(null, stats.isDirectory());
     return;
   });
-};
-
+}
 
 isDir.sync = function isDirSync(filepath) {
-  if (!fs.existsSync(filepath)) {
-    return false;
-  }
-
-  var stat = fs.statSync(filepath);
-  return stat.isDirectory();
+  try {
+    var stat = fs.statSync(filepath);
+    return stat.isDirectory();
+  } catch(err) {}
+  return false;
 };
-
-module.exports = isDir;
