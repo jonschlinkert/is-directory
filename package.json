@@ -1,7 +1,7 @@
 {
   "name": "is-directory",
   "description": "Extends `stats.isDirectory()`, returns `true` if a filepath is a directory.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/jonschlinkert/is-directory",
   "author": {
     "name": "Jon Schlinkert",
@@ -45,7 +45,6 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "^4.0.4",
-    "verb": ">= 0.2.6"
+    "should": "^4.0.4"
   }
 }
