@@ -15,26 +15,36 @@ var fs = require('fs');
 
 module.exports = isDir;
 
-function isDir(filepath, cb) {
-  if (typeof cb !== 'function') {
-    return isDir.sync(filepath);
+/**
+ * async
+ */
+
+function isDir(fp, cb) {
+  if (typeof fp !== 'string') {
+    throw new Error('is-directory async expects filepath to be a string.');
   }
 
-  fs.stat(filepath, function(err, stats) {
-    if (err) {
-      cb(err);
-      return;
-    }
+  if (typeof cb !== 'function') {
+    throw new Error('is-directory async expects a callback function.');
+  }
 
+  fs.stat(fp, function(err, stats) {
+    if (err) return cb(err);
     cb(null, stats.isDirectory());
     return;
   });
 }
 
-isDir.sync = function isDirSync(filepath) {
+/**
+ * sync
+ */
+
+isDir.sync = function isDirSync(fp) {
+  if (typeof fp !== 'string') {
+    throw new Error('is-directory sync expects filepath to be a string.');
+  }
   try {
-    var stat = fs.statSync(filepath);
-    return stat.isDirectory();
+    return fs.statSync(fp).isDirectory();
   } catch(err) {}
   return false;
 };
