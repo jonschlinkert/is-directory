@@ -1,7 +1,7 @@
 {
   "name": "is-directory",
-  "description": "Extends `stats.isDirectory()`, returns `true` if a filepath is a directory.",
-  "version": "0.2.3",
+  "description": "Returns `true` if a filepath is a directory. Basically `fs.statSync().isDirectory()` with extra error handling.",
+  "version": "0.3.0",
   "homepage": "https://github.com/jonschlinkert/is-directory",
   "author": {
     "name": "Jon Schlinkert",
