@@ -1,6 +1,6 @@
 # is-directory [![NPM version](https://badge.fury.io/js/is-directory.svg)](http://badge.fury.io/js/is-directory)  [![Build Status](https://travis-ci.org/jonschlinkert/is-directory.svg)](https://travis-ci.org/jonschlinkert/is-directory) 
 
-> Extends `stats.isDirectory()`, returns `true` if a filepath is a directory.
+> Returns `true` if a filepath is a directory. Basically `fs.statSync().isDirectory()` with extra error handling.
 
 ## Install with [npm](npmjs.org)
 
@@ -18,19 +18,16 @@ npm i -d && npm test
 ## Usage
 
 ```js
-var isDir = require('is-directory');
+var isdir = require('is-directory');
 
-isDir('README.md');
-//=> 'false'
-isDir('test');
+isdir('README.md', function(err, dir) {
+  if (dir) {
+    // do stuff
+  }
+});
+
+isdir.sync('test');
 //=> 'true'
-
-
-function isFile(filepath) {
-  return !isDir(filepath);
-}
-isFile('README.md');
-//=> true
 ```
 
 ## Author
