@@ -1,76 +1,89 @@
-/*!
- * is-directory <https://github.com/jonschlinkert/is-directory>
- *
- * Copyright (c) 2014-2015, Jon Schlinkert.
- * Licensed under the MIT License.
- */
-
 'use strict';
 
-/* deps:mocha */
+require('mocha');
 var assert = require('assert');
-var should = require('should');
-var isDir = require('./');
+var isDirectory = require('./');
 
-
-describe('isDir', function () {
-  it('should return `true` if the path is a directory', function (done) {
-    isDir('node_modules', function (err, dir) {
-      if (err) console.log(err);
-      dir.should.be.true;
+describe('isDirectory', function() {
+  describe('async errors:', function() {
+    it('should throw an error when the callback is missing:', function(cb) {
+      try {
+        isDirectory('foo');
+        cb(new Error('expected an error'));
+      } catch (err) {
+        assert.equal(err.message, 'expected a callback function');
+        cb();
+      }
     });
-    done();
+
+    it('should handle errors for bad args', function(cb) {
+      isDirectory(null, function(err) {
+        assert(err);
+        assert.equal(err.message, 'expected filepath to be a string');
+        cb();
+      });
+    });
   });
 
-  it('should return `false` if the path is not a directory', function (done) {
-    isDir('.jshintrc', function (err, dir) {
-      if (err) console.log(err);
-      dir.should.be.false;
-    });
-    isDir('README.md', function (err, dir) {
-      if (err) console.log(err);
-      dir.should.be.false;
-    });
-    done();
-  });
-
-  describe('errors:', function () {
-    it('should return errors in the callback:', function () {
-      isDir('LICENSE-MIT', function (err, dir) {
-        err.errno.should.equal(-2);
-        err.code.should.equal('ENOENT');
-        err.path.should.equal('LICENSE-MIT');
+  describe('async', function() {
+    it('should return `true` if the path is a directory', function(cb) {
+      isDirectory('node_modules', function(err, dir) {
+        if (err) return cb(err);
+        assert(dir);
+        cb();
       });
     });
 
-    it('should throw an error on bad args:', function () {
-      (function() {
-        isDir();
-      }).should.throw('is-directory async expects filepath to be a string.');
+    it('should be true when a path is a directory', function(cb) {
+      isDirectory('fixtures', function(err, dir) {
+        if (err) return cb(err);
+        assert(dir);
+        cb();
+      });
     });
 
-    it('should throw an error when the callback is missing:', function () {
-      (function() {
-        isDir('foo');
-      }).should.throw('is-directory async expects a callback function.');
+    it('should be false for files that do not exist', function(cb) {
+      isDirectory('fee-fie-foe', function(err, dir) {
+        if (err) return cb(err);
+        assert(!dir);
+        cb();
+      });
+    });
+
+    it('should be `false` if the path is not a directory', function(cb) {
+      isDirectory('.eslintrc.json', function(err, dir) {
+        if (err) return cb(err);
+        assert(!dir);
+
+        isDirectory('README.md', function(err, dir) {
+          if (err) return cb(err);
+          assert(!dir);
+          cb();
+        });
+      });
+    });
+  });
+
+  describe('sync', function() {
+    it('should throw when invalid arguments are given', function(cb) {
+      try {
+        isDirectory.sync();
+        cb(new Error('expected an error'));
+      } catch (err) {
+        assert.equal(err.message, 'expected filepath to be a string');
+        cb();
+      }
+    });
+
+    it('should return `true` if the path is a directory', function() {
+      assert(isDirectory.sync('node_modules'));
+    });
+
+    it('should return `false` if the path is not a directory', function() {
+      assert(!isDirectory.sync('.jshintrc'));
+      assert(!isDirectory.sync('README.md'));
+      assert(!isDirectory.sync('LICENSE'));
     });
   });
 });
 
-describe('isDir sync', function () {
-  it('should throw an error one bad args:', function () {
-    (function() {
-      isDir.sync();
-    }).should.throw('is-directory sync expects filepath to be a string.');
-  });
-
-  it('should return `true` if the path is a directory', function () {
-    isDir.sync('node_modules').should.be.true;
-  });
-
-  it('should return `false` if the path is not a directory', function () {
-    isDir.sync('.jshintrc').should.be.false;
-    isDir.sync('README.md').should.be.false;
-    isDir.sync('LICENSE-MIT').should.be.false;
-  });
-});
